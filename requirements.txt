@@ -6,3 +6,5 @@ pandas
 seaborn
 openpyxl
 requests
+streamlit-float
+streamlit-server-state
