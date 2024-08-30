@@ -52,7 +52,7 @@ idx = IndexAllocator()
 def load_contents() :
     #topic - chapter
     contents = {
-        "파이썬 기초": ["자료형", "제어문", "고급"],
+        "파이썬 기초": ["자료형", "제어문", "고급", "OOP"],
         "Pandas 기초": ["DataFrame", "Excel/CSV", "Data 전처리", "Data 연결과 병합", "Static"],
         "Matplotlib 기초":["Matplotlib 기본", "그래프 그리기", "그래프에 text", "그래프 세부 속성", "스타일 세부 설정", 
                          "Grid, Annotate", "다양한 Plot", "막대 그래프", "Pie chart, 3D plot"],
@@ -1679,6 +1679,266 @@ def show_chapter(topic, chapter):
                 print(arr)    # 출력 [[-1.09887802  2.13154382] [-0.96512407 -0.37879234]]
                 ''',line_numbers=True)
     
+    ############################# OOP 컨텐츠 추가 ###################################
+    elif path == ("파이썬 기초", "OOP") :
+        st.write("파이썬은 객체 지향 프로그래밍(OOP, Object-Oriented Programming)을 지원하는 언어입니다.")
+        st.write("클래스와 객체는 파이썬의 객체 지향 프로그래밍의 기본 단위입니다.")
+        st.write("클래스를 통해 객체의 구조와 동작을 정의하고, 이를 기반으로 객체를 생성하여 다양한 작업을 수행할 수 있습니다.")
+        
+        st.header(f"{idx.getHeadIdx()}클래스 정의")
+        st.write("클래스는 객체의 구조와 동작을 정의하는 템플릿입니다. :gray-background[:red[class]]키워드를 사용하여 클래스를 정의할 수 있습니다. 클래스는 속성(변수)과 메소드(함수)를 가질 수 있습니다.")
+        code='''
+class Person:
+    # 생성자 메소드
+    def __init__(self, name, age):
+        self.name = name  # 인스턴스 변수
+        self.age = age    # 인스턴스 변수
+
+    # 인스턴스 메소드
+    def greet(self):
+        print(f"Hello, my name is {self.name} and I am {self.age} years old.")'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[Person]]이라는 클래스를 정의했습니다. :gray-background[:red[__init__]]메소드는 생성자(constructor)로, 객체가 생성될 때 호출되어 초기화 작업을 수행합니다. :gray-background[:red[greet]]메소드는 객체의 인스턴스 메소드입니다.")
+        st.divider()
+
+        st.header(f"{idx.getHeadIdx()}객체 생성")
+        st.write("객체란 구현하고 싶은 대상으로, 속성(attributes)과 행위(behaviors)를 가집니다.")
+        st.write("파이썬 객체의 속성과 행위를 클래스를 통해 구현할 수 있습니다. 클래스로부터 객체를 생성하려면 클래스 이름을 함수처럼 호출하면 됩니다.")
+        st.write("생성된 객체는 클래스의 인스턴스(instance)라고 불립니다.")
+        code = '''
+# 객체 생성
+person1 = Person("Alice", 30)
+person2 = Person("Bob", 25)
+
+# 메소드 호출
+person1.greet()  # Hello, my name is Alice and I am 30 years old.
+person2.greet()  # Hello, my name is Bob and I am 25 years old.'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[Person]]클래스의 두 개의 인스턴스 :gray-background[:red[person1]]과 :gray-background[:red[person2]]를 생성하고, 각 인스턴스의 :gray-background[:red[greet]]메소드를 호출하여 인사말을 출력합니다.")
+        st.divider()
+
+        st.header(f"{idx.getHeadIdx()}인스턴스 변수와 클래스 변수")
+        st.write("인스턴스 변수는 각 객체마다 별도로 유지되는 변수입니다. 반면, 클래스 변수는 클래스에 속하며 모든 인스턴스가 공유합니다.")
+        code = '''
+class Person:
+    species = "Homo sapiens"  # 클래스 변수
+
+    def __init__(self, name, age):
+        self.name = name  # 인스턴스 변수
+        self.age = age    # 인스턴스 변수
+
+# 객체 생성
+person1 = Person("Alice", 30)
+person2 = Person("Bob", 25)
+
+# 클래스 변수 접근
+print(person1.species)  # Homo sapiens
+print(person2.species)  # Homo sapiens
+
+# 인스턴스 변수 접근
+print(person1.name)  # Alice
+print(person2.name)  # Bob'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[species]]라는 클래스 변수를 정의하여 모든 :gray-background[:red[Person]]인스턴스가 이를 공유합니다. 각 인스턴스는 :gray-background[:red[name]]과 :gray-background[:red[age]]라는 고유의 인스턴스 변수를 가집니다.")
+        st.divider()
+
+        st.header(f"{idx.getHeadIdx()}메소드")
+        st.write("클래스 내의 함수는 메소드라고 불립니다. 메소드는 첫 번째 매개변수로 :gray-background[:red[self]]를 받으며, 이는 호출된 객체를 참조합니다.")
+        st.write("- 메소드의 종류 : 인스턴스 메소드, 클래스 메소드, 정적(static) 메소드")
+        st.subheader(f"{idx.getSubIdx()}인스턴스 메소드")
+        st.write("인스턴스 메소드는 특정 객체에서 호출되는 메소드입니다. :gray-background[:red[self]]를 통해 객체의 속성과 다른 메소드에 접근할 수 있습니다.")
+        code = '''
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        print(f"Hello, my name is {self.name} and I am {self.age} years old.")
+
+# 객체 생성 및 메소드 호출
+person = Person("Alice", 30)
+person.greet()  # Hello, my name is Alice and I am 30 years old.'''
+        st.code(code, language='python', line_numbers=True)
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}클래스 메소드")
+        st.write("클래스 메소드는 클래스 자체에 속하며, 클래스 변수에 접근할 수 있습니다. :gray-background[:red[@classmethod]]데코레이터를 사용하여 정의합니다.")
+        code = '''
+class Person:
+    species = "Homo sapiens"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    @classmethod
+    def species_info(cls):
+        print(f"Species: {cls.species}")
+
+# 클래스 메소드 호출
+Person.species_info()  # Species: Homo sapiens'''
+        st.code(code, language='python', line_numbers=True)
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}정적 메소드")
+        st.write("정적 메소드는 클래스나 인스턴스와 상관없이 독립적으로 동작하는 메소드입니다. :gray-background[:red[@staticmethod]]데코레이터를 사용하여 정의합니다.")
+        code = '''
+class MathOperations:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+# 정적 메소드 호출
+result = MathOperations.add(5, 3)
+print(result)  # 8'''
+        st.code(code, language='python', line_numbers=True)
+        st.divider()
+
+        st.header(f"{idx.getHeadIdx()}객체지향의 특징")
+        st.write("- 객체지향의 특징 : 캡슐화, 상속, 다형성")
+        st.write("상속, 다형성, 캡슐화는 객체 지향 프로그래밍의 핵심 개념으로, 복잡한 소프트웨어 시스템을 더 잘 구조화하고 관리할 수 있게 합니다. 상속을 통해 코드 재사용성을 높이고, 다형성을 통해 동일한 인터페이스로 다양한 객체를 처리하며, 캡슐화를 통해 객체의 내부 상태를 보호할 수 있습니다. 이러한 개념을 잘 활용하면, 더 효율적이고 유지보수하기 쉬운 소프트웨어를 개발할 수 있습니다.")
+        st.write("- 객체지향의 특징 : 캡슐화, 상속, 다형성")
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}캡슐화(encapsulation)")
+        st.write("캡슐화(Encapsulation)는 객체의 내부 상태를 외부에서 직접 접근하지 못하도록 하고, 공개된 메소드를 통해서만 접근할 수 있도록 하는 개념입니다. 이를 통해 데이터의 무결성을 보호하고, 객체의 상태를 제어할 수 있습니다.")
+        code = '''
+class Person:
+    def __init__(self, name, age):
+        self.__name = name  # private 변수
+        self.__age = age    # private 변수
+
+    def get_name(self):
+        return self.__name
+
+    def set_name(self, name):
+        self.__name = name
+
+    def get_age(self):
+        return self.__age
+
+    def set_age(self, age):
+        if 0 <= age <= 120:  # 간단한 유효성 검사
+            self.__age = age
+        else:
+            raise ValueError("Invalid age")
+
+# 객체 생성 및 메소드 호출
+person = Person("Alice", 30)
+print(person.get_name())  # Alice
+print(person.get_age())   # 30
+
+person.set_name("Bob")
+person.set_age(25)
+print(person.get_name())  # Bob
+print(person.get_age())   # 25
+
+# 직접 접근 시도 (실패)
+# print(person.__name)  # AttributeError: 'Person' object has no attribute '__name'
+'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[Person]]클래스의 :gray-background[:red[__name]]과 :gray-background[:red[__age]]변수를 private 변수로 정의하고, getter와 setter 메소드를 통해서만 접근할 수 있도록 하여 캡슐화를 구현합니다.")
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}상속(inheritance)")
+        st.write("상속은 기존 클래스를 재사용하여 새로운 클래스를 정의하는 방법입니다. 상속을 통해 코드의 재사용성과 확장성을 높일 수 있으며, 부모 클래스의 속성과 메소드를 자식 클래스에서 사용할 수 있습니다.")
+        st.write("파이썬에서 상속을 구현하려면, 새로운 클래스 정의 시 괄호 안에 부모 클래스를 지정합니다.")
+        code = '''
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplementedError("Subclass must implement abstract method")
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+
+# 객체 생성 및 메소드 호출
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+print(dog.speak())  # Buddy says Woof!
+print(cat.speak())  # Whiskers says Meow!'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[Animal]]클래스를 상속받아 :gray-background[:red[Dog]]와 :gray-background[:red[Cat]]클래스를 정의하고, 각각의 :gray-background[:red[speak]]메소드를 재정의(오버라이딩)합니다.")
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}다형성(polymorphism)")
+        st.write("다형성(Polymorphism)은 말 그대로 다양한 형상을 의미합니다. 즉, 동일한 인터페이스를 사용하여 서로 다른 데이터 타입을 처리할 수 있게 하는 기능입니다. 이를 통해 객체는 동일한 메소드를 호출하더라도, 각 객체의 고유한 동작을 수행할 수 있습니다.")
+        code = '''
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplementedError("Subclass must implement abstract method")
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+
+def make_animal_speak(animal):
+    print(animal.speak())
+
+# 서로 다른 객체를 동일한 함수로 처리
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+make_animal_speak(dog)  # Buddy says Woof!
+make_animal_speak(cat)  # Whiskers says Meow!'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[make_animal_speak]]함수가 :gray-background[:red[Animal]]클래스의 인스턴스를 매개변수로 받아, 다형성을 이용해 :gray-background[:red[Dog]]와 :gray-background[:red[Cat]]객체의 :gray-background[:red[speak]]메소드를 호출합니다.")
+        st.divider()
+
+        st.subheader(f"{idx.getSubIdx()}상속과 캡슐화 결합")
+        st.write("상속과 캡슐화를 함께 사용하면 자식 클래스에서 부모 클래스의 속성과 메소드를 재사용하면서, 필요한 부분만 오버라이딩하거나 확장할 수 있습니다.")
+        code = '''
+class Person:
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+
+    def get_name(self):
+        return self.__name
+
+    def set_name(self, name):
+        self.__name = name
+
+    def get_age(self):
+        return self.__age
+
+    def set_age(self, age):
+        if 0 <= age <= 120:
+            self.__age = age
+        else:
+            raise ValueError("Invalid age")
+
+class Employee(Person):
+    def __init__(self, name, age, employee_id):
+        super().__init__(name, age)
+        self.__employee_id = employee_id
+
+    def get_employee_id(self):
+        return self.__employee_id
+
+# 객체 생성 및 메소드 호출
+employee = Employee("Charlie", 35, "E12345")
+print(employee.get_name())  # Charlie
+print(employee.get_age())   # 35
+print(employee.get_employee_id())  # E12345'''
+        st.code(code, language='python', line_numbers=True)
+        st.write("위 코드에서는 :gray-background[:red[Person]]클래스를 상속받아 :gray-background[:red[Employee]]클래스를 정의하고, :gray-background[:red[employee_id]]속성을 추가하여 확장합니다. :gray-background[:red[Employee]]클래스는 :gray-background[:red[Person]]클래스의 속성과 메소드를 재사용하면서, 새로운 기능을 추가할 수 있습니다.")
+    ############################# OOP 컨텐츠 추가 ###################################
+
     ### Pandas 컨텐츠 작성
     elif path == ("Pandas 기초", "DataFrame") :
         st.header(f"{idx.getHeadIdx()}데이터프레임 생성") ## 소단원01
@@ -3985,6 +4245,7 @@ plt.legend(loc='upper right', ncol=4)
 plt.tight_layout()
 plt.show()'''
         st.code(code, language='python', line_numbers=True)
+        fig = plt.figure(figsize=(2, 3))
         plt.plot([1, 2, 3], [4, 4, 4], linestyle='solid', color='C0', label="'solid'")
         plt.plot([1, 2, 3], [3, 3, 3], linestyle='dashed', color='C0', label="'dashed'")
         plt.plot([1, 2, 3], [2, 2, 2], linestyle='dotted', color='C0', label="'dotted'")
@@ -3996,7 +4257,8 @@ plt.show()'''
         plt.tight_layout()
         st.write("**plot()** 함수의 **linestyle** 파라미터 값을 직접 지정할 수 있습니다.")
         st.write("포맷 문자열과 같이 ‘solid’, ‘dashed’, ‘dotted’, dashdot’ 네가지의 선 종류를 지정할 수 있습니다.")
-        st.pyplot(plt)
+        
+        st.pyplot(fig)
         plt.close()
         st.divider()
 
